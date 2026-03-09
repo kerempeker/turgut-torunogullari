@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli | Turgut Torunoğulları</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'gold': '#C5A059', 'dark': '#111827' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+        .sidebar-link { transition: all 0.2s; }
+        .sidebar-link.active { background: rgba(197,160,89,0.15); color: #C5A059; border-right: 3px solid #C5A059; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        input[type="file"]::file-selector-button {
+            background: #111827; color: white; border: none; padding: 8px 16px;
+            border-radius: 6px; cursor: pointer; font-size: 13px; margin-right: 12px;
+        }
+        input[type="file"]::file-selector-button:hover { background: #C5A059; }
+        .img-preview { max-height: 200px; border-radius: 8px; object-fit: cover; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+<!-- ════════════════════════ LOGIN EKRANI ════════════════════════ -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-shield-alt text-gold text-2xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-dark">Admin Paneli</h1>
+            <p class="text-gray-500 text-sm mt-1">Turgut Torunoğulları</p>
+        </div>
+        <div id="loginHata" class="hidden bg-red-50 border border-red-200 text-red-600 text-sm p-3 rounded-lg mb-4"></div>
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Kullanıcı Adı</label>
+                <input type="text" id="loginUser" name="username" autocomplete="username"
+                       class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition"
+                       placeholder="admin">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
+                <div class="relative">
+                    <input type="password" id="loginPass" name="password" autocomplete="current-password"
+                           class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition"
+                           placeholder="••••••••">
+                    <button type="button" onclick="togglePass()" class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600">
+                        <i id="passIcon" class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" id="loginBtn"
+                    class="w-full bg-dark text-white py-3 rounded-lg hover:bg-gold transition duration-300 font-medium flex items-center justify-center gap-2">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Giriş Yap</span>
+            </button>
+        </form>
+        <p class="text-center text-xs text-gray-400 mt-6">
+            <a href="index.html" class="hover:text-gold transition">← Siteye Dön</a>
+        </p>
+    </div>
+</div>
+
+<!-- ════════════════════════ ADMIN PANELİ ════════════════════════ -->
+<div id="adminPanel" class="hidden min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-dark text-white fixed h-screen flex flex-col shadow-2xl z-40">
+        <div class="p-6 border-b border-white/10">
+            <h2 class="text-lg font-bold text-white">Turgut Torunoğulları</h2>
+            <p class="text-xs text-gray-400 mt-1">Admin Paneli</p>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-1">
+            <button onclick="showTab('ozet')" id="tab-ozet"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-l-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 active">
+                <i class="fas fa-chart-pie w-5 text-center"></i>
+                Genel Bakış
+            </button>
+            <button onclick="showTab('haberler')" id="tab-haberler"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-l-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5">
+                <i class="fas fa-newspaper w-5 text-center"></i>
+                Haberler
+                <span id="haberSayisi" class="ml-auto bg-gold/20 text-gold text-xs px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="showTab('oduller')" id="tab-oduller"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-l-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5">
+                <i class="fas fa-trophy w-5 text-center"></i>
+                Ödüller
+                <span id="odulSayisi" class="ml-auto bg-gold/20 text-gold text-xs px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="showTab('mesajlar')" id="tab-mesajlar"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-l-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5">
+                <i class="fas fa-envelope w-5 text-center"></i>
+                Mesajlar
+                <span id="okunmamisSayisi" class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full hidden">0</span>
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-white/10 space-y-2">
+            <a href="/" target="_blank"
+               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition">
+                <i class="fas fa-external-link-alt w-5 text-center"></i>
+                Siteyi Görüntüle
+            </a>
+            <button onclick="cikisYap()"
+                    class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-red-400 hover:text-white hover:bg-red-500/20 transition">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                Çıkış Yap
+            </button>
+        </div>
+    </aside>
+
+    <!-- Ana İçerik -->
+    <main class="ml-64 flex-1 min-h-screen">
+
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-8 py-4 sticky top-0 z-30 flex items-center justify-between">
+            <div id="pageTitle" class="text-lg font-semibold text-dark">Genel Bakış</div>
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-500">Hoşgeldiniz, <strong class="text-dark">Admin</strong></span>
+                <div class="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <i class="fas fa-user text-gold text-sm"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8">
+
+            <!-- ── GENEL BAKIŞ ── -->
+            <div id="content-ozet" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-newspaper text-blue-500 text-xl"></i>
+                            </div>
+                            <span class="text-3xl font-bold text-dark" id="ozet-haber">—</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-500">Toplam Haber</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-trophy text-yellow-500 text-xl"></i>
+                            </div>
+                            <span class="text-3xl font-bold text-dark" id="ozet-odul">—</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-500">Toplam Ödül</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-envelope text-green-500 text-xl"></i>
+                            </div>
+                            <span class="text-3xl font-bold text-dark" id="ozet-mesaj">—</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-500">Toplam Mesaj</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-dark mb-4 flex items-center gap-2">
+                            <i class="fas fa-newspaper text-gold"></i> Son Haberler
+                        </h3>
+                        <div id="ozet-son-haberler" class="space-y-3"></div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-dark mb-4 flex items-center gap-2">
+                            <i class="fas fa-envelope text-gold"></i> Son Mesajlar
+                        </h3>
+                        <div id="ozet-son-mesajlar" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── HABERLER ── -->
+            <div id="content-haberler" class="tab-content">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-dark">Haberler Yönetimi</h2>
+                    <button onclick="haberModalAc()"
+                            class="bg-dark text-white px-5 py-2.5 rounded-lg hover:bg-gold transition text-sm font-medium flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Yeni Haber Ekle
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div id="haberlerTablo" class="divide-y divide-gray-100"></div>
+                </div>
+            </div>
+
+            <!-- ── ÖDÜLLER ── -->
+            <div id="content-oduller" class="tab-content">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-dark">Ödüller Yönetimi</h2>
+                    <button onclick="odulModalAc()"
+                            class="bg-dark text-white px-5 py-2.5 rounded-lg hover:bg-gold transition text-sm font-medium flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Yeni Ödül Ekle
+                    </button>
+                </div>
+                <div id="odullerGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- ── MESAJLAR ── -->
+            <div id="content-mesajlar" class="tab-content">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-dark">İletişim Mesajları</h2>
+                    <span id="okunmamisMesaj" class="bg-red-100 text-red-600 text-sm px-3 py-1 rounded-full font-medium"></span>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div id="mesajlarListe" class="divide-y divide-gray-100"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- ════════════════════════ HABER MODAL ════════════════════════ -->
+<div id="haberModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 pt-10 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl">
+        <div class="flex items-center justify-between p-6 border-b border-gray-100">
+            <h3 id="haberModalBaslik" class="text-lg font-bold text-dark">Yeni Haber Ekle</h3>
+            <button onclick="haberModalKapat()" class="text-gray-400 hover:text-gray-600 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <form id="haberForm" class="p-6 space-y-5" onsubmit="haberKaydet(event)">
+            <input type="hidden" id="haberId">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Başlık <span class="text-red-500">*</span></label>
+                    <input type="text" id="haberTitle" required
+                           class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                           placeholder="Haber başlığı">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Kategori <span class="text-red-500">*</span></label>
+                    <input type="text" id="haberCategory" required list="kategoriListesi"
+                           class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                           placeholder="Kategori">
+                    <datalist id="kategoriListesi">
+                        <option value="Ödül Töreni">
+                        <option value="İş Dünyası">
+                        <option value="Etkinlik">
+                        <option value="Ekonomi">
+                        <option value="Genel">
+                    </datalist>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Tarih</label>
+                <input type="text" id="haberDate"
+                       class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                       placeholder="22 Aralık 2024">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Özet (Kısa Açıklama) <span class="text-red-500">*</span></label>
+                <textarea id="haberSummary" rows="2" required
+                          class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm resize-none"
+                          placeholder="Haberin kısa açıklaması..."></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">İçerik</label>
+                <p class="text-xs text-gray-400 mb-2">
+                    Paragrafları boş satırla ayırın. Başlık için <code class="bg-gray-100 px-1 rounded"># Başlık</code>,
+                    alıntı için <code class="bg-gray-100 px-1 rounded">> Alıntı</code> kullanın.
+                </p>
+                <textarea id="haberContent" rows="8"
+                          class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm font-mono"
+                          placeholder="Haber içeriği..."></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Haber Görseli</label>
+                <div class="space-y-3">
+                    <input type="file" id="haberImageFile" name="image" accept="image/*" onchange="resimOnizle(this, 'haberImagePreview')">
+                    <div id="haberImagePreview" class="hidden">
+                        <img class="img-preview" src="" alt="Önizleme">
+                        <button type="button" onclick="resimTemizle('haberImageFile', 'haberImagePreview', 'haberImageUrl')"
+                                class="mt-2 text-xs text-red-500 hover:underline">Kaldır</button>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                        <div class="flex-1 h-px bg-gray-200"></div><span>veya URL girin</span><div class="flex-1 h-px bg-gray-200"></div>
+                    </div>
+                    <input type="url" id="haberImageUrl" onchange="urlOnizle(this.value, 'haberImagePreview')"
+                           class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                           placeholder="https://...">
+                </div>
+            </div>
+            <div id="haberFormHata" class="hidden text-sm p-3 rounded-lg bg-red-50 border border-red-200 text-red-600"></div>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="button" onclick="haberModalKapat()"
+                        class="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
+                    İptal
+                </button>
+                <button type="submit" id="haberKaydetBtn"
+                        class="px-5 py-2.5 bg-dark text-white rounded-lg text-sm font-medium hover:bg-gold transition flex items-center gap-2">
+                    <i class="fas fa-save"></i>
+                    <span>Kaydet</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════════════ ÖDÜL MODAL ════════════════════════ -->
+<div id="odulModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
+        <div class="flex items-center justify-between p-6 border-b border-gray-100">
+            <h3 id="odulModalBaslik" class="text-lg font-bold text-dark">Yeni Ödül Ekle</h3>
+            <button onclick="odulModalKapat()" class="text-gray-400 hover:text-gray-600 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <form id="odulForm" class="p-6 space-y-5" onsubmit="odulKaydet(event)">
+            <input type="hidden" id="odulId">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Ödül Adı <span class="text-red-500">*</span></label>
+                    <input type="text" id="odulTitle" required
+                           class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                           placeholder="Ödül adı">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Yıl</label>
+                    <input type="text" id="odulYear"
+                           class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                           placeholder="2024">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Açıklama</label>
+                <textarea id="odulDescription" rows="3"
+                          class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm resize-none"
+                          placeholder="Ödül açıklaması..."></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Ödül Görseli</label>
+                <div class="space-y-3">
+                    <input type="file" id="odulImageFile" name="image" accept="image/*" onchange="resimOnizle(this, 'odulImagePreview')">
+                    <div id="odulImagePreview" class="hidden">
+                        <img class="img-preview" src="" alt="Önizleme">
+                        <button type="button" onclick="resimTemizle('odulImageFile', 'odulImagePreview', 'odulImageUrl')"
+                                class="mt-2 text-xs text-red-500 hover:underline">Kaldır</button>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                        <div class="flex-1 h-px bg-gray-200"></div><span>veya URL girin</span><div class="flex-1 h-px bg-gray-200"></div>
+                    </div>
+                    <input type="url" id="odulImageUrl" onchange="urlOnizle(this.value, 'odulImagePreview')"
+                           class="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:border-gold transition text-sm"
+                           placeholder="https://...">
+                </div>
+            </div>
+            <div id="odulFormHata" class="hidden text-sm p-3 rounded-lg bg-red-50 border border-red-200 text-red-600"></div>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="button" onclick="odulModalKapat()"
+                        class="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
+                    İptal
+                </button>
+                <button type="submit" id="odulKaydetBtn"
+                        class="px-5 py-2.5 bg-dark text-white rounded-lg text-sm font-medium hover:bg-gold transition flex items-center gap-2">
+                    <i class="fas fa-save"></i>
+                    <span>Kaydet</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Silme Onay Modalı -->
+<div id="silmeModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+        <div class="text-center mb-6">
+            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-trash-alt text-red-500 text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-dark">Silmek istiyor musunuz?</h3>
+            <p id="silmeAciklama" class="text-sm text-gray-500 mt-2"></p>
+        </div>
+        <div class="flex gap-3">
+            <button onclick="silmeModalKapat()"
+                    class="flex-1 py-2.5 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
+                İptal
+            </button>
+            <button id="silmeOnayla"
+                    class="flex-1 py-2.5 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition">
+                Sil
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// YARDIMCI FONKSİYONLAR
+// ═══════════════════════════════════════════════════
+function resimOnizle(input, previewId) {
+    const preview = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.querySelector('img').src = e.target.result;
+            preview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function urlOnizle(url, previewId) {
+    const preview = document.getElementById(previewId);
+    if (url) {
+        preview.querySelector('img').src = url;
+        preview.classList.remove('hidden');
+    } else {
+        preview.classList.add('hidden');
+    }
+}
+
+function resimTemizle(fileId, previewId, urlId) {
+    document.getElementById(fileId).value = '';
+    document.getElementById(urlId).value = '';
+    document.getElementById(previewId).classList.add('hidden');
+    document.getElementById(previewId).querySelector('img').src = '';
+}
+
+function togglePass() {
+    const input = document.getElementById('loginPass');
+    const icon  = document.getElementById('passIcon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+
+function hataMesaji(elId, msg) {
+    const el = document.getElementById(elId);
+    el.textContent = msg;
+    el.classList.remove('hidden');
+    setTimeout(() => el.classList.add('hidden'), 5000);
+}
+
+function basariMesaji(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-6 right-6 bg-green-500 text-white px-5 py-3 rounded-xl shadow-xl text-sm font-medium flex items-center gap-2 z-[100]';
+    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
+}
+
+// ═══════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════
+async function authKontrol() {
+    const res = await fetch('/api/auth');
+    const data = await res.json();
+    if (data.isAdmin) {
+        gosterAdmin();
+    } else {
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+    }
+}
+
+function gosterAdmin() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('adminPanel').classList.remove('hidden');
+    tumVerileriYukle();
+}
+
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Giriş yapılıyor...';
+
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: document.getElementById('loginUser').value,
+                password: document.getElementById('loginPass').value
+            })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            gosterAdmin();
+        } else {
+            hataMesaji('loginHata', data.error || 'Giriş başarısız');
+        }
+    } catch (err) {
+        hataMesaji('loginHata', 'Sunucuya bağlanılamadı.');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Giriş Yap</span>';
+    }
+});
+
+async function cikisYap() {
+    await fetch('/api/logout', { method: 'POST' });
+    document.getElementById('adminPanel').classList.add('hidden');
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('loginPass').value = '';
+}
+
+// ═══════════════════════════════════════════════════
+// SEKME YÖNETİMİ
+// ═══════════════════════════════════════════════════
+const tabTitles = {
+    ozet: 'Genel Bakış',
+    haberler: 'Haberler Yönetimi',
+    oduller: 'Ödüller Yönetimi',
+    mesajlar: 'İletişim Mesajları'
+};
+
+function showTab(name) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+    document.getElementById('content-' + name).classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('pageTitle').textContent = tabTitles[name];
+}
+
+// ═══════════════════════════════════════════════════
+// VERİ YÜKLEME
+// ═══════════════════════════════════════════════════
+let haberlerData = [];
+let odullerData  = [];
+let mesajlarData = [];
+
+async function tumVerileriYukle() {
+    await Promise.all([haberlerYukle(), odullerYukle(), mesajlarYukle()]);
+    ozetGuncelle();
+}
+
+async function haberlerYukle() {
+    const res = await fetch('/api/haberler');
+    haberlerData = await res.json();
+    document.getElementById('haberSayisi').textContent = haberlerData.length;
+    haberlerTablosuRender();
+}
+
+async function odullerYukle() {
+    const res = await fetch('/api/oduller');
+    odullerData = await res.json();
+    document.getElementById('odulSayisi').textContent = odullerData.length;
+    odullerGridRender();
+}
+
+async function mesajlarYukle() {
+    const res = await fetch('/api/iletisim');
+    mesajlarData = await res.json();
+    const okunmamis = mesajlarData.filter(m => !m.read).length;
+    const badge = document.getElementById('okunmamisSayisi');
+    if (okunmamis > 0) {
+        badge.textContent = okunmamis;
+        badge.classList.remove('hidden');
+    } else {
+        badge.classList.add('hidden');
+    }
+    mesajlarListeRender();
+}
+
+function ozetGuncelle() {
+    document.getElementById('ozet-haber').textContent = haberlerData.length;
+    document.getElementById('ozet-odul').textContent  = odullerData.length;
+    document.getElementById('ozet-mesaj').textContent = mesajlarData.length;
+
+    // Son haberler
+    const sonHaberlerEl = document.getElementById('ozet-son-haberler');
+    const sonHaberler = haberlerData.slice(0, 4);
+    sonHaberlerEl.innerHTML = sonHaberler.length ? sonHaberler.map(h => `
+        <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+            <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                ${h.image ? `<img src="${h.image}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-gray-400 text-xs\'><i class=\'fas fa-newspaper\'></i></div>'">` : '<div class="w-full h-full flex items-center justify-center text-gray-400 text-xs"><i class="fas fa-newspaper"></i></div>'}
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-dark truncate">${h.title}</p>
+                <p class="text-xs text-gray-400">${h.date || ''}</p>
+            </div>
+        </div>
+    `).join('') : '<p class="text-sm text-gray-400">Henüz haber yok.</p>';
+
+    // Son mesajlar
+    const sonMesajlarEl = document.getElementById('ozet-son-mesajlar');
+    const sonMesajlar = mesajlarData.slice(0, 4);
+    sonMesajlarEl.innerHTML = sonMesajlar.length ? sonMesajlar.map(m => `
+        <div class="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0">
+            <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fas fa-user text-gray-400 text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-dark flex items-center gap-2">
+                    ${m.name}
+                    ${!m.read ? '<span class="w-2 h-2 bg-red-500 rounded-full inline-block"></span>' : ''}
+                </p>
+                <p class="text-xs text-gray-500 truncate">${m.message}</p>
+            </div>
+        </div>
+    `).join('') : '<p class="text-sm text-gray-400">Henüz mesaj yok.</p>';
+}
+
+// ═══════════════════════════════════════════════════
+// HABERLER RENDER
+// ═══════════════════════════════════════════════════
+function haberlerTablosuRender() {
+    const el = document.getElementById('haberlerTablo');
+    if (haberlerData.length === 0) {
+        el.innerHTML = `<div class="p-12 text-center text-gray-400">
+            <i class="fas fa-newspaper text-4xl mb-3 block opacity-30"></i>
+            <p>Henüz haber eklenmemiş.</p>
+        </div>`;
+        return;
+    }
+    el.innerHTML = haberlerData.map(h => `
+        <div class="flex items-center gap-4 p-4 hover:bg-gray-50 transition">
+            <div class="w-16 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                ${h.image ? `<img src="${h.image}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-gray-300\'><i class=\'fas fa-image\'></i></div>'">` : '<div class="w-full h-full flex items-center justify-center text-gray-300"><i class="fas fa-image"></i></div>'}
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="font-medium text-dark text-sm truncate">${h.title}</p>
+                <div class="flex items-center gap-2 mt-0.5">
+                    <span class="text-xs text-gold font-medium">${h.category}</span>
+                    <span class="text-gray-300">·</span>
+                    <span class="text-xs text-gray-400">${h.date || ''}</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <a href="haber-detay.html?id=${h.id}" target="_blank"
+                   class="text-gray-400 hover:text-blue-500 transition p-2" title="Görüntüle">
+                    <i class="fas fa-eye text-sm"></i>
+                </a>
+                <button onclick="haberDuzenle('${h.id}')"
+                        class="text-gray-400 hover:text-gold transition p-2" title="Düzenle">
+                    <i class="fas fa-edit text-sm"></i>
+                </button>
+                <button onclick="haberSil('${h.id}', '${h.title.replace(/'/g, "\\'")}')"
+                        class="text-gray-400 hover:text-red-500 transition p-2" title="Sil">
+                    <i class="fas fa-trash text-sm"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// HABERLER MODAL
+// ═══════════════════════════════════════════════════
+function haberModalAc(haber = null) {
+    document.getElementById('haberModal').classList.remove('hidden');
+    document.getElementById('haberFormHata').classList.add('hidden');
+    document.getElementById('haberModalBaslik').textContent = haber ? 'Haberi Düzenle' : 'Yeni Haber Ekle';
+
+    if (haber) {
+        document.getElementById('haberId').value = haber.id;
+        document.getElementById('haberTitle').value = haber.title;
+        document.getElementById('haberCategory').value = haber.category;
+        document.getElementById('haberDate').value = haber.date || '';
+        document.getElementById('haberSummary').value = haber.summary;
+        document.getElementById('haberContent').value = haber.content || '';
+
+        if (haber.image) {
+            document.getElementById('haberImageUrl').value = haber.image.startsWith('http') ? haber.image : '';
+            const preview = document.getElementById('haberImagePreview');
+            preview.querySelector('img').src = haber.image;
+            preview.classList.remove('hidden');
+        }
+    } else {
+        document.getElementById('haberForm').reset();
+        document.getElementById('haberId').value = '';
+        document.getElementById('haberImagePreview').classList.add('hidden');
+    }
+    document.body.style.overflow = 'hidden';
+}
+
+function haberModalKapat() {
+    document.getElementById('haberModal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function haberDuzenle(id) {
+    const haber = haberlerData.find(h => h.id === id);
+    if (haber) haberModalAc(haber);
+}
+
+async function haberKaydet(e) {
+    e.preventDefault();
+    const btn = document.getElementById('haberKaydetBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
+
+    const id = document.getElementById('haberId').value;
+    const formData = new FormData();
+    formData.append('title',    document.getElementById('haberTitle').value);
+    formData.append('category', document.getElementById('haberCategory').value);
+    formData.append('date',     document.getElementById('haberDate').value);
+    formData.append('summary',  document.getElementById('haberSummary').value);
+    formData.append('content',  document.getElementById('haberContent').value);
+    formData.append('imageUrl', document.getElementById('haberImageUrl').value);
+
+    const imageFile = document.getElementById('haberImageFile').files[0];
+    if (imageFile) formData.append('image', imageFile);
+
+    try {
+        const url    = id ? `/api/haberler/${id}` : '/api/haberler';
+        const method = id ? 'PUT' : 'POST';
+        const res    = await fetch(url, { method, body: formData });
+        const data   = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Hata');
+        haberModalKapat();
+        await haberlerYukle();
+        ozetGuncelle();
+        basariMesaji(id ? 'Haber güncellendi.' : 'Haber eklendi.');
+    } catch (err) {
+        hataMesaji('haberFormHata', err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> <span>Kaydet</span>';
+    }
+}
+
+async function haberSil(id, title) {
+    silmeOnay(`"${title}" haberini silmek istediğinizden emin misiniz?`, async () => {
+        const res = await fetch(`/api/haberler/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await haberlerYukle();
+            ozetGuncelle();
+            basariMesaji('Haber silindi.');
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════
+// ÖDÜLLER RENDER
+// ═══════════════════════════════════════════════════
+function odullerGridRender() {
+    const el = document.getElementById('odullerGrid');
+    if (odullerData.length === 0) {
+        el.innerHTML = `<div class="col-span-3 text-center py-12 text-gray-400 bg-white rounded-xl border border-gray-100">
+            <i class="fas fa-trophy text-4xl mb-3 block opacity-30"></i>
+            <p>Henüz ödül eklenmemiş.</p>
+        </div>`;
+        return;
+    }
+    el.innerHTML = odullerData.map(o => `
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group">
+            <div class="h-48 overflow-hidden bg-gray-100 relative">
+                ${o.image ? `<img src="${o.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-gray-300\'><i class=\'fas fa-image text-3xl\'></i></div>'">` : '<div class="w-full h-full flex items-center justify-center text-gray-300"><i class="fas fa-image text-3xl"></i></div>'}
+                <div class="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                    <button onclick="odulDuzenle('${o.id}')"
+                            class="w-8 h-8 bg-white rounded-lg shadow text-gold hover:bg-gold hover:text-white transition flex items-center justify-center">
+                        <i class="fas fa-edit text-xs"></i>
+                    </button>
+                    <button onclick="odulSil('${o.id}', '${o.title.replace(/'/g, "\\'")}')"
+                            class="w-8 h-8 bg-white rounded-lg shadow text-red-400 hover:bg-red-500 hover:text-white transition flex items-center justify-center">
+                        <i class="fas fa-trash text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex items-start justify-between gap-2">
+                    <h4 class="font-bold text-dark text-sm">${o.title}</h4>
+                    ${o.year ? `<span class="text-xs bg-gold/10 text-gold font-bold px-2 py-0.5 rounded-full flex-shrink-0">${o.year}</span>` : ''}
+                </div>
+                ${o.description ? `<p class="text-xs text-gray-500 mt-1">${o.description}</p>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// ÖDÜLLER MODAL
+// ═══════════════════════════════════════════════════
+function odulModalAc(odul = null) {
+    document.getElementById('odulModal').classList.remove('hidden');
+    document.getElementById('odulFormHata').classList.add('hidden');
+    document.getElementById('odulModalBaslik').textContent = odul ? 'Ödülü Düzenle' : 'Yeni Ödül Ekle';
+
+    if (odul) {
+        document.getElementById('odulId').value = odul.id;
+        document.getElementById('odulTitle').value = odul.title;
+        document.getElementById('odulYear').value = odul.year || '';
+        document.getElementById('odulDescription').value = odul.description || '';
+
+        if (odul.image) {
+            document.getElementById('odulImageUrl').value = odul.image.startsWith('http') ? odul.image : '';
+            const preview = document.getElementById('odulImagePreview');
+            preview.querySelector('img').src = odul.image;
+            preview.classList.remove('hidden');
+        }
+    } else {
+        document.getElementById('odulForm').reset();
+        document.getElementById('odulId').value = '';
+        document.getElementById('odulImagePreview').classList.add('hidden');
+    }
+    document.body.style.overflow = 'hidden';
+}
+
+function odulModalKapat() {
+    document.getElementById('odulModal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function odulDuzenle(id) {
+    const odul = odullerData.find(o => o.id === id);
+    if (odul) odulModalAc(odul);
+}
+
+async function odulKaydet(e) {
+    e.preventDefault();
+    const btn = document.getElementById('odulKaydetBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
+
+    const id = document.getElementById('odulId').value;
+    const formData = new FormData();
+    formData.append('title',       document.getElementById('odulTitle').value);
+    formData.append('year',        document.getElementById('odulYear').value);
+    formData.append('description', document.getElementById('odulDescription').value);
+    formData.append('imageUrl',    document.getElementById('odulImageUrl').value);
+
+    const imageFile = document.getElementById('odulImageFile').files[0];
+    if (imageFile) formData.append('image', imageFile);
+
+    try {
+        const url    = id ? `/api/oduller/${id}` : '/api/oduller';
+        const method = id ? 'PUT' : 'POST';
+        const res    = await fetch(url, { method, body: formData });
+        const data   = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Hata');
+        odulModalKapat();
+        await odullerYukle();
+        ozetGuncelle();
+        basariMesaji(id ? 'Ödül güncellendi.' : 'Ödül eklendi.');
+    } catch (err) {
+        hataMesaji('odulFormHata', err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> <span>Kaydet</span>';
+    }
+}
+
+async function odulSil(id, title) {
+    silmeOnay(`"${title}" ödülünü silmek istediğinizden emin misiniz?`, async () => {
+        const res = await fetch(`/api/oduller/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await odullerYukle();
+            ozetGuncelle();
+            basariMesaji('Ödül silindi.');
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════
+// MESAJLAR
+// ═══════════════════════════════════════════════════
+function mesajlarListeRender() {
+    const el = document.getElementById('mesajlarListe');
+    const okunmamis = mesajlarData.filter(m => !m.read).length;
+    const okunmamisEl = document.getElementById('okunmamisMesaj');
+    okunmamisEl.textContent = okunmamis > 0 ? `${okunmamis} okunmamış mesaj` : '';
+
+    if (mesajlarData.length === 0) {
+        el.innerHTML = `<div class="p-12 text-center text-gray-400">
+            <i class="fas fa-envelope-open text-4xl mb-3 block opacity-30"></i>
+            <p>Henüz mesaj yok.</p>
+        </div>`;
+        return;
+    }
+    el.innerHTML = mesajlarData.map(m => `
+        <div class="p-5 hover:bg-gray-50 transition ${!m.read ? 'bg-blue-50/30' : ''}">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex items-start gap-3 flex-1 min-w-0">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <i class="fas fa-user text-gray-500 text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-medium text-dark text-sm">${m.name}</span>
+                            ${!m.read ? '<span class="w-2 h-2 bg-blue-500 rounded-full inline-block"></span>' : ''}
+                            <span class="text-xs text-gray-400">${new Date(m.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                        <a href="mailto:${m.email}" class="text-xs text-gold hover:underline">${m.email}</a>
+                        <p class="text-sm text-gray-600 mt-2 leading-relaxed">${m.message}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    ${!m.read ? `
+                        <button onclick="mesajOkundu('${m.id}')" title="Okundu olarak işaretle"
+                                class="text-gray-400 hover:text-blue-500 transition p-2">
+                            <i class="fas fa-check text-sm"></i>
+                        </button>
+                    ` : ''}
+                    <button onclick="mesajSil('${m.id}')" title="Sil"
+                            class="text-gray-400 hover:text-red-500 transition p-2">
+                        <i class="fas fa-trash text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function mesajOkundu(id) {
+    const res = await fetch(`/api/iletisim/${id}/read`, { method: 'PUT' });
+    if (res.ok) {
+        await mesajlarYukle();
+        ozetGuncelle();
+    }
+}
+
+async function mesajSil(id) {
+    silmeOnay('Bu mesajı silmek istediğinizden emin misiniz?', async () => {
+        const res = await fetch(`/api/iletisim/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            await mesajlarYukle();
+            ozetGuncelle();
+            basariMesaji('Mesaj silindi.');
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════
+// SİLME ONAY MODAL
+// ═══════════════════════════════════════════════════
+let silmeCallback = null;
+
+function silmeOnay(msg, callback) {
+    document.getElementById('silmeAciklama').textContent = msg;
+    silmeCallback = callback;
+    document.getElementById('silmeModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function silmeModalKapat() {
+    document.getElementById('silmeModal').classList.add('hidden');
+    document.body.style.overflow = '';
+    silmeCallback = null;
+}
+
+document.getElementById('silmeOnayla').addEventListener('click', async function () {
+    if (silmeCallback) {
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        try { await silmeCallback(); } finally {
+            this.disabled = false;
+            this.innerHTML = 'Sil';
+            silmeModalKapat();
+        }
+    }
+});
+
+// Modal dışına tıkla kapat
+document.getElementById('haberModal').addEventListener('click', function (e) {
+    if (e.target === this) haberModalKapat();
+});
+document.getElementById('odulModal').addEventListener('click', function (e) {
+    if (e.target === this) odulModalKapat();
+});
+document.getElementById('silmeModal').addEventListener('click', function (e) {
+    if (e.target === this) silmeModalKapat();
+});
+
+// ESC tuşu
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        haberModalKapat();
+        odulModalKapat();
+        silmeModalKapat();
+    }
+});
+
+// ═══════════════════════════════════════════════════
+// BAŞLAT
+// ═══════════════════════════════════════════════════
+authKontrol();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödüller | Turgut Torunoğulları</title>
+    <meta name="description" content="Turgut Torunoğulları'nın aldığı ödüller ve onur belgeleri.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'gold': '#C5A059', 'dark': '#111827' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- NAV -->
+    <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold text-dark">Turgut Torunoğulları</a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-wider text-gray-500">
+                <a href="index.html"    class="hover:text-gold transition">Anasayfa</a>
+                <a href="hakkimda.html" class="hover:text-gold transition">Hakkımda</a>
+                <a href="basinda.html"  class="hover:text-gold transition">Basında</a>
+                <a href="oduller.html"  class="text-gold font-bold">Ödüller</a>
+                <a href="iletisim.html" class="hover:text-gold transition">İletişim</a>
+            </div>
+            <button id="menuBtn" class="md:hidden p-2 text-dark focus:outline-none" aria-label="Menü">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="iconOpen"  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path id="iconClose" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-1 text-sm font-medium uppercase tracking-wider">
+                <a href="index.html"    class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Anasayfa</a>
+                <a href="hakkimda.html" class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Hakkımda</a>
+                <a href="basinda.html"  class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Basında</a>
+                <a href="oduller.html"  class="py-3 px-4 text-gold font-bold bg-gray-50 rounded-lg">Ödüller</a>
+                <a href="iletisim.html" class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 pt-32 pb-20">
+        <div class="text-center mb-16">
+            <span class="text-gold text-sm tracking-widest uppercase font-bold">Başarılar</span>
+            <h1 class="text-3xl md:text-4xl font-serif font-bold text-dark mt-2">Özel Ödüller ve Plaketler</h1>
+            <p class="text-gray-500 mt-4 text-lg max-w-2xl mx-auto">Tarafımıza verilen çok özel ödüller ve teşekkür belgeleri. Detaylı incelemek için görsellere tıklayınız.</p>
+        </div>
+
+        <div id="odullerGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Yükleniyor -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse border border-gray-100">
+                <div class="h-64 bg-gray-200"></div>
+                <div class="p-6"><div class="h-5 bg-gray-200 rounded mb-2 w-2/3 mx-auto"></div><div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse border border-gray-100">
+                <div class="h-64 bg-gray-200"></div>
+                <div class="p-6"><div class="h-5 bg-gray-200 rounded mb-2 w-2/3 mx-auto"></div><div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse border border-gray-100">
+                <div class="h-64 bg-gray-200"></div>
+                <div class="p-6"><div class="h-5 bg-gray-200 rounded mb-2 w-2/3 mx-auto"></div><div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white text-gray-400 py-8 text-center text-sm border-t border-gray-100 mt-auto">
+        <p>&copy; 2025 Turgut Torunoğulları. Korvia tarafından tasarlanmıştır. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="imageModal" class="fixed inset-0 z-[60] hidden bg-black/90 justify-center items-center p-4 backdrop-blur-sm" onclick="closeModal(event)">
+        <button onclick="closeModal(event)" class="absolute top-6 right-6 text-white/70 hover:text-white z-50 bg-black/50 rounded-full p-2 transition focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="max-w-5xl w-full flex flex-col items-center justify-center pointer-events-none">
+            <div class="relative w-full max-h-[80vh] flex justify-center pointer-events-auto">
+                <img id="modalImg" src="" class="max-h-[75vh] w-auto object-contain rounded-lg shadow-2xl bg-white" alt="Ödül">
+            </div>
+            <div class="mt-6 text-center pointer-events-auto">
+                <h3 id="modalTitle" class="text-3xl font-serif font-bold text-white mb-2"></h3>
+                <p id="modalYear" class="text-gold font-bold mb-1"></p>
+                <p id="modalDesc" class="text-gray-300 text-lg"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobil menü
+        (function () {
+            const btn = document.getElementById('menuBtn');
+            const menu = document.getElementById('mobileMenu');
+            const iconOpen = document.getElementById('iconOpen');
+            const iconClose = document.getElementById('iconClose');
+            btn.addEventListener('click', function () {
+                menu.classList.toggle('hidden');
+                iconOpen.classList.toggle('hidden');
+                iconClose.classList.toggle('hidden');
+            });
+        })();
+
+        function openModal(img, title, year, desc) {
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalYear').textContent = year ? year + ' Yılı Ödülü' : '';
+            document.getElementById('modalDesc').textContent = desc;
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event.target.id === 'imageModal' || event.target.closest('button[onclick*="closeModal"]')) {
+                const modal = document.getElementById('imageModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('imageModal');
+                if (!modal.classList.contains('hidden')) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        async function odullerYukle() {
+            try {
+                const res = await fetch('/api/oduller');
+                const oduller = await res.json();
+                const grid = document.getElementById('odullerGrid');
+
+                if (oduller.length === 0) {
+                    grid.innerHTML = `<div class="col-span-3 text-center py-16 text-gray-400">
+                        <i class="fas fa-trophy text-4xl mb-4 block opacity-30"></i>
+                        Henüz ödül eklenmemiş.
+                    </div>`;
+                    return;
+                }
+
+                grid.innerHTML = oduller.map(o => `
+                    <div onclick="openModal('${o.image}', '${o.title.replace(/'/g, "\\'")}', '${o.year || ''}', '${(o.description || '').replace(/'/g, "\\'")}')"
+                         class="bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group border border-gray-100">
+                        <div class="relative h-64 overflow-hidden">
+                            ${o.image
+                                ? `<img src="${o.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${o.title}" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-gray-100 flex items-center justify-center text-gray-400\'><i class=\'fas fa-trophy text-4xl\'></i></div>'">`
+                                : `<div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400"><i class="fas fa-trophy text-4xl"></i></div>`
+                            }
+                            <div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                                <span class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-search-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3 class="font-serif font-bold text-xl text-dark mb-1">${o.title}</h3>
+                            ${o.year ? `<span class="text-xs font-bold text-gold uppercase">${o.year}</span>` : ''}
+                            <p class="text-gray-500 text-sm mt-2">${o.description || ''}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                document.getElementById('odullerGrid').innerHTML = `
+                    <div class="col-span-3 text-center py-16 text-gray-400">
+                        <i class="fas fa-exclamation-triangle text-4xl mb-4 block opacity-30"></i>
+                        Ödüller yüklenemedi. Lütfen sunucunun çalıştığından emin olun.
+                    </div>
+                `;
+            }
+        }
+
+        odullerYukle();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim | Turgut Torunoğulları</title>
+    <meta name="description" content="Turgut Torunoğulları ile iletişime geçin.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'gold': '#C5A059', 'dark': '#111827' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-white text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- NAV -->
+    <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold text-dark">Turgut Torunoğulları</a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-wider text-gray-500">
+                <a href="index.html"    class="hover:text-gold transition">Anasayfa</a>
+                <a href="hakkimda.html" class="hover:text-gold transition">Hakkımda</a>
+                <a href="basinda.html"  class="hover:text-gold transition">Basında</a>
+                <a href="oduller.html"  class="hover:text-gold transition">Ödüller</a>
+                <a href="iletisim.html" class="text-gold font-bold">İletişim</a>
+            </div>
+            <button id="menuBtn" class="md:hidden p-2 text-dark focus:outline-none" aria-label="Menü">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="iconOpen"  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path id="iconClose" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-1 text-sm font-medium uppercase tracking-wider">
+                <a href="index.html"    class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Anasayfa</a>
+                <a href="hakkimda.html" class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Hakkımda</a>
+                <a href="basinda.html"  class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Basında</a>
+                <a href="oduller.html"  class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Ödüller</a>
+                <a href="iletisim.html" class="py-3 px-4 text-gold font-bold bg-gray-50 rounded-lg">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 pt-32 pb-20">
+        <div class="text-center mb-16">
+            <span class="text-gold text-sm font-bold tracking-widest uppercase">İletişim</span>
+            <h1 class="text-4xl font-serif font-bold text-dark mt-2">İletişime Geçin</h1>
+            <p class="text-gray-500 mt-4 max-w-xl mx-auto">İş birlikleri, basın talepleri veya görüşleriniz için aşağıdaki formdan veya iletişim bilgilerinden ulaşabilirsiniz.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+
+            <!-- İletişim Bilgileri -->
+            <div class="bg-gray-50 p-8 rounded-lg">
+                <h3 class="text-xl font-bold mb-6 text-dark">İletişim Bilgileri</h3>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="text-gold text-xl w-6 flex-shrink-0 mt-0.5"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm uppercase text-dark mb-1">Merkez Ofis</h4>
+                            <p class="text-gray-600 text-sm">Edelstaal Group HQ<br>Den Bosch, Hollanda</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="text-gold text-xl w-6 flex-shrink-0 mt-0.5"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm uppercase text-dark mb-1">E-Posta</h4>
+                            <a href="mailto:info@turguttorunogullari.com.tr" class="text-gray-600 text-sm hover:text-gold transition">
+                                info@turguttorunogullari.com.tr
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="text-gold text-xl w-6 flex-shrink-0 mt-0.5"><i class="fab fa-instagram"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm uppercase text-dark mb-1">Instagram</h4>
+                            <a href="https://instagram.com/torunogullariturgut" target="_blank" rel="noopener"
+                               class="text-gray-600 text-sm hover:text-gold transition">
+                                @torunogullariturgut
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="iletisimFormu" class="space-y-5">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Adınız Soyadınız</label>
+                    <input type="text" id="name" name="name" required
+                           class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition"
+                           placeholder="Adınız Soyadınız">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">E-Posta Adresiniz</label>
+                    <input type="email" id="email" name="email" required
+                           class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition"
+                           placeholder="ornek@email.com">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Mesajınız</label>
+                    <textarea id="message" name="message" rows="5" required
+                              class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition resize-none"
+                              placeholder="Mesajınızı buraya yazınız..."></textarea>
+                </div>
+
+                <div id="formMesaj" class="hidden text-sm p-4 rounded"></div>
+
+                <button type="submit" id="gonderBtn"
+                        class="w-full bg-dark text-white py-3 rounded hover:bg-gold transition duration-300 font-medium flex items-center justify-center gap-2">
+                    <span>Gönder</span>
+                    <svg id="gonderSpinner" class="hidden animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-white text-gray-400 py-8 text-center text-sm border-t border-gray-100 mt-auto">
+        <p>&copy; 2025 Turgut Torunoğulları. Korvia tarafından tasarlanmıştır. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        // Mobil menü
+        (function () {
+            const btn = document.getElementById('menuBtn');
+            const menu = document.getElementById('mobileMenu');
+            const iconOpen = document.getElementById('iconOpen');
+            const iconClose = document.getElementById('iconClose');
+            btn.addEventListener('click', function () {
+                menu.classList.toggle('hidden');
+                iconOpen.classList.toggle('hidden');
+                iconClose.classList.toggle('hidden');
+            });
+        })();
+
+        // Form gönderimi
+        document.getElementById('iletisimFormu').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('gonderBtn');
+            const spinner = document.getElementById('gonderSpinner');
+            const mesajDiv = document.getElementById('formMesaj');
+
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            mesajDiv.classList.add('hidden');
+
+            const data = {
+                name:    document.getElementById('name').value.trim(),
+                email:   document.getElementById('email').value.trim(),
+                message: document.getElementById('message').value.trim()
+            };
+
+            try {
+                const res = await fetch('/api/iletisim', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(data)
+                });
+                const result = await res.json();
+
+                if (res.ok && result.success) {
+                    mesajDiv.className = 'text-sm p-4 rounded bg-green-50 border border-green-200 text-green-700';
+                    mesajDiv.textContent = 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapılacaktır.';
+                    mesajDiv.classList.remove('hidden');
+                    document.getElementById('iletisimFormu').reset();
+                } else {
+                    throw new Error(result.error || 'Hata');
+                }
+            } catch (err) {
+                mesajDiv.className = 'text-sm p-4 rounded bg-red-50 border border-red-200 text-red-700';
+                mesajDiv.textContent = 'Mesajınız gönderilemedi. Lütfen tekrar deneyin.';
+                mesajDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>

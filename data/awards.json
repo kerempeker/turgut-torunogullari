@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "title": "Onur Belgesi",
+    "description": "Uluslararası başarı ve katkılardan dolayı takdim edilmiştir.",
+    "year": "2024",
+    "image": "/uploads/oduller/odul_1.jpg",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Teşekkür Plaketi",
+    "description": "Sektöre olan değerli katkılarınız için.",
+    "year": "2023",
+    "image": "/uploads/oduller/odul_2.jpg",
+    "createdAt": "2023-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "Başarı Sertifikası",
+    "description": "Yılın en başarılı girişimcisi ödülü.",
+    "year": "2022",
+    "image": "http://turguttorunogullari.com.tr/public/upload/album/4bd83ba009e56ff52e6d1c342298cebb.jpg",
+    "createdAt": "2022-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Kent ve Yaşam Ödülü",
+    "description": "Sosyal sorumluluk projelerine katkı.",
+    "year": "2021",
+    "image": "http://turguttorunogullari.com.tr/public/upload/album/2757d214b3d18e7bb67e631d89598d2b.jpg",
+    "createdAt": "2021-01-01T00:00:00.000Z"
+  }
+]

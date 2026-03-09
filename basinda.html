@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basında | Turgut Torunoğulları</title>
+    <meta name="description" content="Turgut Torunoğulları hakkındaki haberler ve medya yansımaları.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'gold': '#C5A059', 'dark': '#111827' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- NAV -->
+    <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold text-dark">Turgut Torunoğulları</a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-wider text-gray-500">
+                <a href="index.html"    class="hover:text-gold transition">Anasayfa</a>
+                <a href="hakkimda.html" class="hover:text-gold transition">Hakkımda</a>
+                <a href="basinda.html"  class="text-gold font-bold">Basında</a>
+                <a href="oduller.html"  class="hover:text-gold transition">Ödüller</a>
+                <a href="iletisim.html" class="hover:text-gold transition">İletişim</a>
+            </div>
+            <button id="menuBtn" class="md:hidden p-2 text-dark focus:outline-none" aria-label="Menü">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="iconOpen"  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path id="iconClose" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-1 text-sm font-medium uppercase tracking-wider">
+                <a href="index.html"    class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Anasayfa</a>
+                <a href="hakkimda.html" class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Hakkımda</a>
+                <a href="basinda.html"  class="py-3 px-4 text-gold font-bold bg-gray-50 rounded-lg">Basında</a>
+                <a href="oduller.html"  class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Ödüller</a>
+                <a href="iletisim.html" class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white pt-40 pb-16 text-center">
+        <div class="container mx-auto px-6">
+            <p class="text-gold text-sm font-bold tracking-widest uppercase mb-2">Medya Yansımaları</p>
+            <h1 class="text-4xl md:text-5xl font-serif font-bold text-dark">Basında Turgut Torunoğulları</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 pb-20">
+        <!-- Filtre Butonları -->
+        <div id="kategoriler" class="flex flex-wrap gap-2 mb-10 justify-center">
+            <button onclick="filtrele('tumu')" id="btn-tumu"
+                class="px-5 py-2 rounded-full text-sm font-medium bg-dark text-white transition">
+                Tümü
+            </button>
+        </div>
+
+        <div id="haberlerGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Yükleniyor... -->
+            <div class="bg-white rounded shadow-md overflow-hidden animate-pulse">
+                <div class="h-64 bg-gray-200"></div>
+                <div class="p-8"><div class="h-5 bg-gray-200 rounded mb-3"></div><div class="h-4 bg-gray-200 rounded w-3/4"></div></div>
+            </div>
+            <div class="bg-white rounded shadow-md overflow-hidden animate-pulse">
+                <div class="h-64 bg-gray-200"></div>
+                <div class="p-8"><div class="h-5 bg-gray-200 rounded mb-3"></div><div class="h-4 bg-gray-200 rounded w-3/4"></div></div>
+            </div>
+            <div class="bg-white rounded shadow-md overflow-hidden animate-pulse">
+                <div class="h-64 bg-gray-200"></div>
+                <div class="p-8"><div class="h-5 bg-gray-200 rounded mb-3"></div><div class="h-4 bg-gray-200 rounded w-3/4"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white text-gray-400 py-8 text-center text-sm border-t border-gray-100 mt-auto">
+        <p>&copy; 2025 Turgut Torunoğulları. Korvia tarafından tasarlanmıştır. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        // Mobil menü
+        (function () {
+            const btn = document.getElementById('menuBtn');
+            const menu = document.getElementById('mobileMenu');
+            const iconOpen = document.getElementById('iconOpen');
+            const iconClose = document.getElementById('iconClose');
+            btn.addEventListener('click', function () {
+                menu.classList.toggle('hidden');
+                iconOpen.classList.toggle('hidden');
+                iconClose.classList.toggle('hidden');
+            });
+        })();
+
+        let tumHaberler = [];
+        let aktifKategori = 'tumu';
+
+        function haberKarti(h) {
+            return `
+                <article class="bg-white rounded shadow-md overflow-hidden group hover:shadow-2xl transition duration-300">
+                    <div class="h-64 overflow-hidden bg-gray-100">
+                        ${h.image
+                            ? `<img src="${h.image}" alt="${h.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-gray-400\'><i class=\'fas fa-newspaper text-4xl\'></i></div>'">`
+                            : `<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-newspaper text-4xl"></i></div>`
+                        }
+                    </div>
+                    <div class="p-8">
+                        <span class="text-xs font-bold text-gold uppercase tracking-widest">${h.category}</span>
+                        <h3 class="font-serif text-xl font-bold text-dark mt-2 mb-3">${h.title}</h3>
+                        <p class="text-gray-600 text-sm mb-6 leading-relaxed line-clamp-3">${h.summary}</p>
+                        <a href="haber-detay.html?id=${h.id}" class="text-gold font-bold text-xs uppercase tracking-wider border-b-2 border-transparent hover:border-gold pb-1 transition">Haberi Oku &rarr;</a>
+                    </div>
+                </article>
+            `;
+        }
+
+        function filtrele(kategori) {
+            aktifKategori = kategori;
+            document.querySelectorAll('#kategoriler button').forEach(b => {
+                b.classList.remove('bg-dark', 'text-white', 'bg-white', 'text-dark', 'border', 'border-gray-300');
+                if (b.dataset.kategori === kategori) {
+                    b.classList.add('bg-dark', 'text-white');
+                } else {
+                    b.classList.add('bg-white', 'text-dark', 'border', 'border-gray-300');
+                }
+            });
+
+            const filtrelenmis = kategori === 'tumu'
+                ? tumHaberler
+                : tumHaberler.filter(h => h.category === kategori);
+
+            const grid = document.getElementById('haberlerGrid');
+            if (filtrelenmis.length === 0) {
+                grid.innerHTML = `<div class="col-span-3 text-center py-16 text-gray-400">
+                    <i class="fas fa-newspaper text-4xl mb-4 block opacity-30"></i>
+                    Bu kategoride henüz haber yok.
+                </div>`;
+            } else {
+                grid.innerHTML = filtrelenmis.map(haberKarti).join('');
+            }
+        }
+
+        async function haberlerYukle() {
+            try {
+                const res = await fetch('/api/haberler');
+                tumHaberler = await res.json();
+
+                // Kategori butonlarını oluştur
+                const kategoriler = [...new Set(tumHaberler.map(h => h.category))];
+                const katDiv = document.getElementById('kategoriler');
+                katDiv.innerHTML = `
+                    <button onclick="filtrele('tumu')" data-kategori="tumu"
+                        class="px-5 py-2 rounded-full text-sm font-medium bg-dark text-white transition">
+                        Tümü
+                    </button>
+                    ${kategoriler.map(k => `
+                        <button onclick="filtrele('${k}')" data-kategori="${k}"
+                            class="px-5 py-2 rounded-full text-sm font-medium bg-white text-dark border border-gray-300 hover:bg-dark hover:text-white transition">
+                            ${k}
+                        </button>
+                    `).join('')}
+                `;
+
+                filtrele('tumu');
+            } catch (e) {
+                document.getElementById('haberlerGrid').innerHTML = `
+                    <div class="col-span-3 text-center py-16 text-gray-400">
+                        <i class="fas fa-exclamation-triangle text-4xl mb-4 block opacity-30"></i>
+                        Haberler yüklenemedi. Lütfen sunucunun çalıştığından emin olun.
+                    </div>
+                `;
+            }
+        }
+
+        haberlerYukle();
+    </script>
+
+</body>
+</html>

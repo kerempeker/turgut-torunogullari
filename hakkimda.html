@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımda | Turgut Torunoğulları</title>
+    <meta name="description" content="Turgut Torunoğulları – Kars'tan Avrupa'ya uzanan başarı hikayesi.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'gold': '#C5A059', 'dark': '#111827' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-white text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <!-- NAV -->
+    <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-serif font-bold text-dark">Turgut Torunoğulları</a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-wider text-gray-500">
+                <a href="index.html"    class="hover:text-gold transition">Anasayfa</a>
+                <a href="hakkimda.html" class="text-gold font-bold">Hakkımda</a>
+                <a href="basinda.html"  class="hover:text-gold transition">Basında</a>
+                <a href="oduller.html"  class="hover:text-gold transition">Ödüller</a>
+                <a href="iletisim.html" class="hover:text-gold transition">İletişim</a>
+            </div>
+            <button id="menuBtn" class="md:hidden p-2 text-dark focus:outline-none" aria-label="Menü">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="iconOpen"  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path id="iconClose" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-1 text-sm font-medium uppercase tracking-wider">
+                <a href="index.html"    class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Anasayfa</a>
+                <a href="hakkimda.html" class="py-3 px-4 text-gold font-bold bg-gray-50 rounded-lg">Hakkımda</a>
+                <a href="basinda.html"  class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Basında</a>
+                <a href="oduller.html"  class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">Ödüller</a>
+                <a href="iletisim.html" class="py-3 px-4 text-gray-600 hover:text-gold hover:bg-gray-50 rounded-lg transition">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 pt-32 pb-20">
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+
+            <!-- Sol: Fotoğraf ve Künye -->
+            <div class="md:w-1/3 md:sticky top-24">
+                <img src="http://turguttorunogullari.com.tr/public/upload/album/059de91b87f4afc4d65065948fe5883f.jpg"
+                     class="w-full rounded shadow-xl grayscale hover:grayscale-0 transition duration-500"
+                     alt="Turgut Torunoğulları">
+
+                <div class="mt-8 bg-gray-50 p-6 rounded border-l-4 border-gold">
+                    <h3 class="font-serif text-xl font-bold text-dark mb-4">Künye</h3>
+                    <ul class="space-y-4 text-sm text-gray-600">
+                        <li class="flex flex-col border-b border-gray-200 pb-2">
+                            <span class="font-bold text-dark">Doğum</span>
+                            <span>1958, Kars-Susuz</span>
+                        </li>
+                        <li class="flex flex-col border-b border-gray-200 pb-2">
+                            <span class="font-bold text-dark">Şirket</span>
+                            <span>Edelstaal Group International</span>
+                        </li>
+                        <li class="flex flex-col border-b border-gray-200 pb-2">
+                            <span class="font-bold text-dark">Ana Markalar</span>
+                            <span>Simtronic, Orka Hotels, Orka Homes</span>
+                        </li>
+                        <li class="flex flex-col border-b border-gray-200 pb-2">
+                            <span class="font-bold text-dark">Sivil Toplum</span>
+                            <span>DTİK Avrupa Komitesi Başkanı</span>
+                        </li>
+                        <li class="flex flex-col">
+                            <span class="font-bold text-dark">Medeni Hali</span>
+                            <span>Evli, 4 Çocuk Babası</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sağ: İçerik -->
+            <div class="md:w-2/3">
+                <h1 class="text-4xl md:text-5xl font-serif font-bold text-dark mb-2">Turgut Torunoğulları</h1>
+                <p class="text-gold font-medium text-lg mb-8">Edelstaal Group International Yönetim Kurulu Başkanı &mdash; DTİK Avrupa Başkanı</p>
+
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Türk iş dünyasının Avrupa'daki en güçlü temsilcilerinden biri olan Turgut Torunoğulları, 1958 yılında Kars'ın Susuz ilçesinde dünyaya geldi. Gençlik yıllarında edindiği ilk ticari tecrübelerin ardından, 1980 yılında evliliğiyle birlikte radikal bir karar alarak Hollanda'ya göç etti. Bu yolculuk, sadece bir coğrafya değişikliği değil, aynı zamanda Avrupa'daki Türk diasporası için ilham verici bir başarı hikayesinin de başlangıcı oldu.
+                </p>
+
+                <h2 class="text-2xl font-serif font-bold text-dark mt-10 mb-4">İşçilikten Patronluğa: Bir Başarı Öyküsü</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Hollanda'ya vardığında Edelstaal firmasında tencere pazarlama elemanı olarak iş hayatına atıldı. Kapı kapı dolaşarak gerçekleştirdiği satışlarda kırdığı rekorlar ve sergilediği üstün ikna kabiliyeti, şirket yönetiminin dikkatini çekti. Firmanın ekonomik darboğaza girdiği bir dönemde, bir zamanlar "işçi" olarak girdiği kapıdan içeri bu kez "patron" olarak girdi ve şirketi satın aldı.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Torunoğulları, İtalya'da ürettirdiği <strong>Simtronic</strong> markalı çelik tencerelerle Avrupa'daki Türk ailelerinin mutfaklarına girmeyi başardı. Kısa sürede pazar lideri konumuna yükselen marka, bugünkü dev holding yapısının temel taşını oluşturdu.
+                </p>
+
+                <h2 class="text-2xl font-serif font-bold text-dark mt-10 mb-4">Turizm ve İnşaat Yatırımları</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Tencere sektöründen elde ettiği sermayeyi stratejik yatırımlarla büyüten Torunoğulları, <strong>Edelstaal Group International</strong> çatısı altında faaliyet alanlarını genişletti. Özellikle turizm sektöründe yarattığı <strong>Orka Hotels</strong> markası ile Fethiye, Marmaris ve İstanbul'da lüks otel yatırımlarına imza attı. Grup bünyesindeki Orka Sunlife Resort &amp; Spa ve Orka Lotus Beach gibi tesisler, Türk turizminin önemli değerleri arasında yer almaktadır.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Bunun yanı sıra <strong>Orka Homes</strong> markasıyla inşaat ve gayrimenkul sektöründe faaliyet gösteren grup, Hollanda ve Türkiye'de binlerce konut inşa etmiş, özellikle yabancı yatırımcıların Türkiye'den mülk edinmesinde öncü rol oynamıştır.
+                </p>
+
+                <h2 class="text-2xl font-serif font-bold text-dark mt-10 mb-4">Sivil Toplum ve Liderlik</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Turgut Torunoğulları, iş dünyasındaki başarısını sivil toplum çalışmalarıyla taçlandırmıştır. Uzun yıllar Hollanda Türk İşadamları Derneği (HOTİAD) Başkanlığı görevlerini yürüttükten sonra Dış Ekonomik İlişkiler Kurulu (DEİK) çatısı altındaki <strong>Dünya Türk İş Konseyi (DTİK)</strong> Avrupa Bölge Komitesi Başkanlığı'nı yürütmektedir.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                    Avrupa'daki Türklerin "işçi" statüsünden "işveren" statüsüne geçişini savunan vizyonuyla, Türk girişimcilerin Avrupa'da örgütlenmesine ve lobi faaliyetlerinin güçlenmesine büyük katkılar sağlamıştır. Bu çalışmaları neticesinde 2007 yılında Avrupa'da <strong>"Yılın İş Adamı"</strong> seçilmiştir.
+                </p>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-12">
+                    <div class="text-center p-6 border border-gray-200 rounded hover:border-gold hover:shadow-lg transition bg-gray-50">
+                        <span class="block text-4xl font-serif font-bold text-gold">1980</span>
+                        <span class="text-xs font-bold uppercase text-gray-500 mt-2 block">Yılında Başlayan Yolculuk</span>
+                    </div>
+                    <div class="text-center p-6 border border-gray-200 rounded hover:border-gold hover:shadow-lg transition bg-gray-50">
+                        <span class="block text-4xl font-serif font-bold text-gold">16</span>
+                        <span class="text-xs font-bold uppercase text-gray-500 mt-2 block">Faaliyet Gösterilen Ülke</span>
+                    </div>
+                    <div class="text-center p-6 border border-gray-200 rounded hover:border-gold hover:shadow-lg transition bg-gray-50">
+                        <span class="block text-4xl font-serif font-bold text-gold">4000+</span>
+                        <span class="text-xs font-bold uppercase text-gray-500 mt-2 block">Çalışan Sayısı</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-gray-400 py-10 border-t-4 border-gold mt-auto">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-2xl font-serif font-bold text-white block mb-1">Turgut Torunoğulları</span>
+                <p class="text-sm">Edelstaal Group International</p>
+            </div>
+            <div class="text-sm text-center md:text-right">
+                <p>&copy; 2025 Turgut Torunoğulları. Korvia tarafından tasarlanmıştır. Tüm Hakları Saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const btn = document.getElementById('menuBtn');
+            const menu = document.getElementById('mobileMenu');
+            const iconOpen = document.getElementById('iconOpen');
+            const iconClose = document.getElementById('iconClose');
+            btn.addEventListener('click', function () {
+                menu.classList.toggle('hidden');
+                iconOpen.classList.toggle('hidden');
+                iconClose.classList.toggle('hidden');
+            });
+        })();
+    </script>
+
+</body>
+</html>
