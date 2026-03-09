@@ -20,7 +20,7 @@
     "title": "Başarı Sertifikası",
     "description": "Yılın en başarılı girişimcisi ödülü.",
     "year": "2022",
-    "image": "http://turguttorunogullari.com.tr/public/upload/album/4bd83ba009e56ff52e6d1c342298cebb.jpg",
+    "image": "/uploads/oduller/odul_1.jpg",
     "createdAt": "2022-01-01T00:00:00.000Z"
   },
   {
@@ -28,7 +28,7 @@
     "title": "Kent ve Yaşam Ödülü",
     "description": "Sosyal sorumluluk projelerine katkı.",
     "year": "2021",
-    "image": "http://turguttorunogullari.com.tr/public/upload/album/2757d214b3d18e7bb67e631d89598d2b.jpg",
+    "image": "/uploads/oduller/odul_2.jpg",
     "createdAt": "2021-01-01T00:00:00.000Z"
   }
 ]
