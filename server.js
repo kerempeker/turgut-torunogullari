@@ -24,8 +24,11 @@ const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(__dirname, 'uploads');
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), { index: 'index.html' }));
 app.use('/uploads', express.static(UPLOADS_DIR));
+
+// Kök route açıkça tanımla
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'turgut-torunogullari-gizli-anahtar-2025',
