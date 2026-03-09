@@ -22,8 +22,20 @@ const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(__dirname, 'uploads');
 });
 
 // ── Middleware ────────────────────────────────────────────────────────────────
+app.set('trust proxy', 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'turgut-torunogullari-gizli-anahtar-2025',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+    secure: false
+  }
+}));
 
 // Statik dosyalar: HTML uzantısız URL'leri de destekle (/oduller → oduller.html)
 app.use(express.static(path.join(__dirname), { extensions: ['html'], index: 'index.html' }));
@@ -37,13 +49,6 @@ pages.forEach(page => {
   app.get('/' + page + '.html', (req, res) => res.sendFile(file));
 });
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'turgut-torunogullari-gizli-anahtar-2025',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 }
-}));
 
 // ── Multer (Resim Yükleme) ────────────────────────────────────────────────────
 function makeUpload(subdir) {
