@@ -24,10 +24,18 @@ const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(__dirname, 'uploads');
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname), { index: 'index.html' }));
+
+// Statik dosyalar: HTML uzantısız URL'leri de destekle (/oduller → oduller.html)
+app.use(express.static(path.join(__dirname), { extensions: ['html'], index: 'index.html' }));
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// Kök route açıkça tanımla
+// Sayfalar için açık route tanımları (uzantılı ve uzantısız her ikisi de çalışsın)
+const pages = ['index', 'hakkimda', 'basinda', 'oduller', 'iletisim', 'haber-detay', 'admin'];
+pages.forEach(page => {
+  const file = path.join(__dirname, page + '.html');
+  app.get('/' + page, (req, res) => res.sendFile(file));
+  app.get('/' + page + '.html', (req, res) => res.sendFile(file));
+});
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.use(session({
