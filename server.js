@@ -1,6 +1,6 @@
 const express = require('express');
 const multer  = require('multer');
-const session = require('express-session');
+const crypto  = require('crypto');
 const fs      = require('fs');
 const path    = require('path');
 
@@ -22,20 +22,11 @@ const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(__dirname, 'uploads');
 });
 
 // ── Middleware ────────────────────────────────────────────────────────────────
-app.set('trust proxy', 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'turgut-torunogullari-gizli-anahtar-2025',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'lax',
-    secure: false
-  }
-}));
+// ── Token Tabanlı Auth (cookie/session sorunlarından bağımsız) ────────────────
+const activeTokens = new Set();
 
 // Statik dosyalar: HTML uzantısız URL'leri de destekle (/oduller → oduller.html)
 app.use(express.static(path.join(__dirname), { extensions: ['html'], index: 'index.html' }));
@@ -97,7 +88,9 @@ const ADMIN_PASS = process.env.ADMIN_PASS || 'turgut2025';
 
 // ── Auth Middleware ───────────────────────────────────────────────────────────
 const requireAdmin = (req, res, next) => {
-  if (req.session && req.session.isAdmin) return next();
+  const auth = req.headers['authorization'] || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (token && activeTokens.has(token)) return next();
   return res.status(401).json({ error: 'Yetkisiz erişim. Lütfen giriş yapın.' });
 };
 
@@ -105,19 +98,25 @@ const requireAdmin = (req, res, next) => {
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   if (username === ADMIN_USER && password === ADMIN_PASS) {
-    req.session.isAdmin = true;
-    res.json({ success: true });
+    const token = crypto.randomBytes(32).toString('hex');
+    activeTokens.add(token);
+    res.json({ success: true, token });
   } else {
     res.status(401).json({ error: 'Hatalı kullanıcı adı veya şifre.' });
   }
 });
 
 app.post('/api/logout', (req, res) => {
-  req.session.destroy(() => res.json({ success: true }));
+  const auth = req.headers['authorization'] || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (token) activeTokens.delete(token);
+  res.json({ success: true });
 });
 
 app.get('/api/auth', (req, res) => {
-  res.json({ isAdmin: !!(req.session && req.session.isAdmin) });
+  const auth = req.headers['authorization'] || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  res.json({ isAdmin: !!(token && activeTokens.has(token)) });
 });
 
 // ── Haberler API ──────────────────────────────────────────────────────────────

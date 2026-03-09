@@ -407,6 +407,20 @@
 
 <script>
 // ═══════════════════════════════════════════════════
+// TOKEN (cookie/session kullanılmıyor)
+// ═══════════════════════════════════════════════════
+let adminToken = null;
+
+function authHeaders() {
+    return adminToken ? { 'Authorization': 'Bearer ' + adminToken } : {};
+}
+
+function authFetch(url, options = {}) {
+    options.headers = Object.assign({}, options.headers || {}, authHeaders());
+    return fetch(url, options);
+}
+
+// ═══════════════════════════════════════════════════
 // YARDIMCI FONKSİYONLAR
 // ═══════════════════════════════════════════════════
 function resimOnizle(input, previewId) {
@@ -468,15 +482,10 @@ function basariMesaji(msg) {
 // ═══════════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════════
-async function authKontrol() {
-    const res = await fetch('/api/auth');
-    const data = await res.json();
-    if (data.isAdmin) {
-        gosterAdmin();
-    } else {
-        document.getElementById('loginScreen').classList.remove('hidden');
-        document.getElementById('adminPanel').classList.add('hidden');
-    }
+function authKontrol() {
+    // Sayfa yüklenince her zaman login ekranını göster
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('adminPanel').classList.add('hidden');
 }
 
 function gosterAdmin() {
@@ -501,7 +510,8 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             })
         });
         const data = await res.json();
-        if (res.ok && data.success) {
+        if (res.ok && data.success && data.token) {
+            adminToken = data.token;
             gosterAdmin();
         } else {
             hataMesaji('loginHata', data.error || 'Giriş başarısız');
@@ -515,7 +525,8 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 });
 
 async function cikisYap() {
-    await fetch('/api/logout', { method: 'POST' });
+    await authFetch('/api/logout', { method: 'POST' });
+    adminToken = null;
     document.getElementById('adminPanel').classList.add('hidden');
     document.getElementById('loginScreen').classList.remove('hidden');
     document.getElementById('loginPass').value = '';
@@ -566,7 +577,7 @@ async function odullerYukle() {
 }
 
 async function mesajlarYukle() {
-    const res = await fetch('/api/iletisim');
+    const res = await authFetch('/api/iletisim');
     mesajlarData = await res.json();
     const okunmamis = mesajlarData.filter(m => !m.read).length;
     const badge = document.getElementById('okunmamisSayisi');
@@ -722,7 +733,7 @@ async function haberKaydet(e) {
     try {
         const url    = id ? `/api/haberler/${id}` : '/api/haberler';
         const method = id ? 'PUT' : 'POST';
-        const res    = await fetch(url, { method, body: formData });
+        const res    = await authFetch(url, { method, body: formData });
         const data   = await res.json();
 
         if (!res.ok) throw new Error(data.error || 'Hata');
@@ -740,7 +751,7 @@ async function haberKaydet(e) {
 
 async function haberSil(id, title) {
     silmeOnay(`"${title}" haberini silmek istediğinizden emin misiniz?`, async () => {
-        const res = await fetch(`/api/haberler/${id}`, { method: 'DELETE' });
+        const res = await authFetch(`/api/haberler/${id}`, { method: 'DELETE' });
         if (res.ok) {
             await haberlerYukle();
             ozetGuncelle();
@@ -844,7 +855,7 @@ async function odulKaydet(e) {
     try {
         const url    = id ? `/api/oduller/${id}` : '/api/oduller';
         const method = id ? 'PUT' : 'POST';
-        const res    = await fetch(url, { method, body: formData });
+        const res    = await authFetch(url, { method, body: formData });
         const data   = await res.json();
 
         if (!res.ok) throw new Error(data.error || 'Hata');
@@ -862,7 +873,7 @@ async function odulKaydet(e) {
 
 async function odulSil(id, title) {
     silmeOnay(`"${title}" ödülünü silmek istediğinizden emin misiniz?`, async () => {
-        const res = await fetch(`/api/oduller/${id}`, { method: 'DELETE' });
+        const res = await authFetch(`/api/oduller/${id}`, { method: 'DELETE' });
         if (res.ok) {
             await odullerYukle();
             ozetGuncelle();
@@ -922,7 +933,7 @@ function mesajlarListeRender() {
 }
 
 async function mesajOkundu(id) {
-    const res = await fetch(`/api/iletisim/${id}/read`, { method: 'PUT' });
+    const res = await authFetch(`/api/iletisim/${id}/read`, { method: 'PUT' });
     if (res.ok) {
         await mesajlarYukle();
         ozetGuncelle();
@@ -931,7 +942,7 @@ async function mesajOkundu(id) {
 
 async function mesajSil(id) {
     silmeOnay('Bu mesajı silmek istediğinizden emin misiniz?', async () => {
-        const res = await fetch(`/api/iletisim/${id}`, { method: 'DELETE' });
+        const res = await authFetch(`/api/iletisim/${id}`, { method: 'DELETE' });
         if (res.ok) {
             await mesajlarYukle();
             ozetGuncelle();
